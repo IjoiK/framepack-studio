@@ -696,10 +696,21 @@ interface = create_interface(
 )
 
 # Launch the interface
-interface.launch(
-    server_name=args.server,
-    server_port=args.port,
-    share=args.share,
-    inbrowser=args.inbrowser,
-    allowed_paths=[settings.get("output_dir"), settings.get("metadata_dir")],
-)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--share', action='store_true')
+    parser.add_argument("--server", type=str, default='0.0.0.0')
+    parser.add_argument("--port", type=int, required=False)
+    parser.add_argument("--inbrowser", action='store_true')
+    parser.add_argument("--lora", type=str, default=None, help="Lora path (comma separated for multiple)")
+    parser.add_argument("--offline", action='store_true', help="Run in offline mode")
+    args = parser.parse_args()
+
+    # Launch the interface
+    interface.launch(
+        server_name=args.server,
+        server_port=args.port,
+        share=args.share,
+        inbrowser=args.inbrowser,
+        allowed_paths=[settings.get("output_dir"), settings.get("metadata_dir")],
+    )
